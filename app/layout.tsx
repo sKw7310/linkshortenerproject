@@ -33,7 +33,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider appearance={{ baseTheme: shadcn }}>
+    <ClerkProvider 
+      appearance={{ baseTheme: shadcn }}
+      signInFallbackRedirectUrl="/dashboard"
+      signUpFallbackRedirectUrl="/dashboard"
+    >
       <html lang="en" className="dark">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
@@ -44,19 +48,19 @@ export default function RootLayout({
               <h1 className="text-2xl font-bold text-center flex-1">Link Shortener</h1>
               <div className="flex items-center gap-3 flex-1 justify-end">
                 <SignedOut>
-                  <SignInButton mode="modal">
+                  <SignInButton mode="modal" forceRedirectUrl="/dashboard">
                     <Button variant="ghost">
                       Sign In
                     </Button>
                   </SignInButton>
-                  <SignUpButton mode="modal">
+                  <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
                     <Button>
                       Sign Up
                     </Button>
                   </SignUpButton>
                 </SignedOut>
                 <SignedIn>
-                  <UserButton />
+                  <UserButton afterSignOutUrl="/" />
                 </SignedIn>
               </div>
             </div>

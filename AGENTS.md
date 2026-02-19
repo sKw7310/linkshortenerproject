@@ -45,7 +45,19 @@ When contributing to this project, always:
 - **Tailwind CSS v4** + **shadcn/ui** for UI
 - **Lucide React** for icons
 
-## 📝 Before You Start
+## � IMPORTANT: No middleware.ts
+
+**⚠️ DO NOT USE middleware.ts - It is deprecated in Next.js 16+**
+
+This project uses **Next.js 16**, which has deprecated the traditional `middleware.ts` file approach. Instead:
+
+- **NEVER create or use `middleware.ts`** - This file should not exist in the project
+- **USE `proxy.ts` instead** - All middleware logic and request handling should be implemented in `proxy.ts`
+- The `proxy.ts` file handles authentication checks, redirects, and other middleware functionality
+
+If you need to add middleware logic, modify the existing `proxy.ts` file following the established patterns within it.
+
+## �📝 Before You Start
 
 **MANDATORY STEPS - Do not skip these:**
 

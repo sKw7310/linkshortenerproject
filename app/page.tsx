@@ -27,7 +27,7 @@ export default async function Home() {
             Perfect for marketers, developers, and businesses.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <SignUpButton mode="modal">
+            <SignUpButton mode="modal" forceRedirectUrl="/dashboard">
               <Button size="lg" className="px-8 text-lg h-12">
                 Get Started Free
               </Button>
