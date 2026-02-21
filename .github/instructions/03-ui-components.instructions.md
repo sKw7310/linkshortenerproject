@@ -1,3 +1,7 @@
+---
+description: Read this before creating or modifying UI components in this project.
+---
+
 # UI Components
 
 This document outlines the UI component standards for the Link Shortener project.
