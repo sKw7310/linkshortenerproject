@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,17 +8,20 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { deleteLink } from '../actions';
-import type { Link } from '@/db/schema';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { deleteLink } from "../actions";
+import type { Link } from "@/db/schema";
 
 interface DeleteConfirmDialogProps {
   link: Link;
   children?: React.ReactNode;
 }
 
-export function DeleteConfirmDialog({ link, children }: DeleteConfirmDialogProps) {
+export function DeleteConfirmDialog({
+  link,
+  children,
+}: DeleteConfirmDialogProps) {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -29,8 +32,8 @@ export function DeleteConfirmDialog({ link, children }: DeleteConfirmDialogProps
 
     const result = await deleteLink({ linkId: link.id });
 
-    if ('error' in result) {
-      setError(result.details || result.error || 'An error occurred');
+    if ("error" in result) {
+      setError(result.details || result.error || "An error occurred");
       setIsLoading(false);
     } else {
       // Success - close dialog
@@ -42,13 +45,18 @@ export function DeleteConfirmDialog({ link, children }: DeleteConfirmDialogProps
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {children || <Button variant="outline" size="sm">Delete</Button>}
+        {children || (
+          <Button variant="outline" size="sm">
+            Delete
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Delete Link</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete this link? This action cannot be undone.
+            Are you sure you want to delete this link? This action cannot be
+            undone.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 pt-4">
@@ -65,18 +73,14 @@ export function DeleteConfirmDialog({ link, children }: DeleteConfirmDialogProps
               <span className="font-medium text-muted-foreground shrink-0">
                 Destination:
               </span>
-              <span className="text-sm break-all">
-                {link.originalUrl}
-              </span>
+              <span className="text-sm break-all">{link.originalUrl}</span>
             </div>
             {link.title && (
               <div className="flex items-start gap-2">
                 <span className="font-medium text-muted-foreground shrink-0">
                   Title:
                 </span>
-                <span className="text-sm">
-                  {link.title}
-                </span>
+                <span className="text-sm">{link.title}</span>
               </div>
             )}
           </div>
@@ -102,7 +106,7 @@ export function DeleteConfirmDialog({ link, children }: DeleteConfirmDialogProps
               onClick={handleDelete}
               disabled={isLoading}
             >
-              {isLoading ? 'Deleting...' : 'Delete Link'}
+              {isLoading ? "Deleting..." : "Delete Link"}
             </Button>
           </div>
         </div>

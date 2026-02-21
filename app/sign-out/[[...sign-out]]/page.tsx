@@ -1,5 +1,5 @@
-import { SignOutButton } from '@clerk/nextjs';
-import { redirect } from 'next/navigation';
+import { SignOutButton } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 export default function SignOutPage() {
   // Automatically redirect after sign out

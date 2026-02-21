@@ -1,21 +1,27 @@
-import { auth } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
-import { getUserLinks } from '@/data/links';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { CreateLinkDialog } from './_components/create-link-dialog';
-import { EditLinkDialog } from './_components/edit-link-dialog';
-import { DeleteConfirmDialog } from './_components/delete-confirm-dialog';
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { getUserLinks } from "@/data/links";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { CreateLinkDialog } from "./_components/create-link-dialog";
+import { EditLinkDialog } from "./_components/edit-link-dialog";
+import { DeleteConfirmDialog } from "./_components/delete-confirm-dialog";
 
 export default async function Dashboard() {
   const { userId } = await auth();
-  
+
   if (!userId) {
-    redirect('/sign-in');
+    redirect("/sign-in");
   }
-  
+
   const links = await getUserLinks(userId);
-  
+
   return (
     <div className="pt-32">
       <main className="container mx-auto p-4 max-w-6xl">
@@ -23,14 +29,14 @@ export default async function Dashboard() {
           <div>
             <h1 className="text-3xl font-bold">Your Links</h1>
             <p className="text-muted-foreground mt-2">
-              Manage and track your shortened links
+              Manage your shortened links
             </p>
           </div>
           <CreateLinkDialog>
             <Button>Create New Link</Button>
           </CreateLinkDialog>
         </div>
-        
+
         {links.length === 0 ? (
           <Card className="text-center py-12">
             <CardContent className="pt-6">
@@ -58,7 +64,9 @@ export default async function Dashboard() {
                             Short URL:
                           </span>
                           <code className="text-sm bg-muted px-2 py-1 rounded">
-                            {process.env.NEXT_PUBLIC_APP_URL || 'localhost:3000'}/{link.shortCode}
+                            {process.env.NEXT_PUBLIC_APP_URL ||
+                              "localhost:3000"}
+                            /{link.shortCode}
                           </code>
                         </div>
                         <div className="flex items-start gap-2">
@@ -88,18 +96,12 @@ export default async function Dashboard() {
                 <CardContent>
                   <div className="flex gap-6 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">Clicks:</span>
-                      <span className="font-semibold text-primary">
-                        {link.clicks.toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
                       <span className="font-medium">Created:</span>
                       <span>
-                        {new Date(link.createdAt).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric',
+                        {new Date(link.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
                         })}
                       </span>
                     </div>

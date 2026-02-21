@@ -23,12 +23,12 @@ The `/dashboard` route is **protected** and requires authentication:
 
 ```typescript
 // Use Clerk's middleware or auth helpers
-import { auth } from '@clerk/nextjs/server';
+import { auth } from "@clerk/nextjs/server";
 
 // Check authentication
 const { userId } = await auth();
 if (!userId) {
-  redirect('/sign-in');
+  redirect("/sign-in");
 }
 ```
 
@@ -43,11 +43,11 @@ import { redirect } from 'next/navigation';
 
 export default async function HomePage() {
   const { userId } = await auth();
-  
+
   if (userId) {
     redirect('/dashboard');
   }
-  
+
   // Show landing page for non-authenticated users
   return <LandingPage />;
 }
@@ -62,13 +62,13 @@ Sign in and sign up flows should **always launch as modals**, not full-page rout
 import { SignIn, SignUp } from '@clerk/nextjs';
 
 // Modal mode
-<SignIn 
-  routing="modal" 
+<SignIn
+  routing="modal"
   signUpUrl="/sign-up"
 />
 
-<SignUp 
-  routing="modal" 
+<SignUp
+  routing="modal"
   signInUrl="/sign-in"
 />
 ```
@@ -82,13 +82,13 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 
 export default async function DashboardPage() {
   const { userId } = await auth();
-  
+
   if (!userId) {
     redirect('/sign-in');
   }
-  
+
   const user = await currentUser();
-  
+
   return <Dashboard user={user} />;
 }
 ```
@@ -103,10 +103,10 @@ import { useUser, useAuth } from '@clerk/nextjs';
 export function UserProfile() {
   const { user, isLoaded } = useUser();
   const { signOut } = useAuth();
-  
+
   if (!isLoaded) return <Spinner />;
   if (!user) return null;
-  
+
   return (
     <div>
       <p>{user.emailAddresses[0].emailAddress}</p>
@@ -122,11 +122,11 @@ Use Clerk's middleware to protect multiple routes:
 
 ```typescript
 // middleware.ts
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isProtectedRoute = createRouteMatcher([
-  '/dashboard(.*)',
-  '/api/links(.*)',
+  "/dashboard(.*)",
+  "/api/links(.*)",
 ]);
 
 export default clerkMiddleware((auth, req) => {
@@ -135,8 +135,8 @@ export default clerkMiddleware((auth, req) => {
 
 export const config = {
   matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    '/(api|trpc)(.*)',
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/(api|trpc)(.*)",
   ],
 };
 ```
@@ -147,19 +147,16 @@ Protect API routes by checking authentication:
 
 ```typescript
 // app/api/links/route.ts
-import { auth } from '@clerk/nextjs/server';
-import { NextResponse } from 'next/server';
+import { auth } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   const { userId } = await auth();
-  
+
   if (!userId) {
-    return NextResponse.json(
-      { error: 'Unauthorized' },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  
+
   // Process authenticated request
   // ...
 }
@@ -174,11 +171,11 @@ export async function POST(request: Request) {
 const user = await currentUser();
 
 // Common user properties
-user.id                                    // Clerk user ID
-user.emailAddresses[0].emailAddress        // Primary email
-user.firstName                             // First name
-user.lastName                              // Last name
-user.imageUrl                              // Profile image
+user.id; // Clerk user ID
+user.emailAddresses[0].emailAddress; // Primary email
+user.firstName; // First name
+user.lastName; // Last name
+user.imageUrl; // Profile image
 ```
 
 ### Linking Users to Database
@@ -187,11 +184,11 @@ Store Clerk's `userId` in your database to link users to their data:
 
 ```typescript
 // db/schema.ts
-export const links = pgTable('links', {
-  id: serial('id').primaryKey(),
-  userId: text('user_id').notNull(), // Clerk user ID
-  shortCode: text('short_code').notNull().unique(),
-  destinationUrl: text('destination_url').notNull(),
+export const links = pgTable("links", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id").notNull(), // Clerk user ID
+  shortCode: text("short_code").notNull().unique(),
+  destinationUrl: text("destination_url").notNull(),
   // ... other fields
 });
 ```

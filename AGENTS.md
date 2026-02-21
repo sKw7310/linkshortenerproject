@@ -91,14 +91,15 @@ As an AI assistant working on this project:
 ### Workflow for Code Changes
 
 1. **Identify the area** - Determine which part of the codebase you're modifying
-3. **Understand the patterns** - Ensure you understand the standards and patterns
-4. **Plan your changes** - Think through the implementation
-5. **Write the code** - Now, and only now, generate the code
-6. **Verify compliance** - Ensure your code follows the documented patterns
+2. **Understand the patterns** - Ensure you understand the standards and patterns
+3. **Plan your changes** - Think through the implementation
+4. **Write the code** - Now, and only now, generate the code
+5. **Verify compliance** - Ensure your code follows the documented patterns
 
 ## 📚 Additional Context
 
 This is a **link shortener application** that allows users to:
+
 - Create shortened URLs
 - Track analytics (clicks, referrers, geographic data)
 - Manage their links with full CRUD operations

@@ -26,6 +26,7 @@ npx shadcn@latest add [component-name]
 ```
 
 Examples:
+
 ```bash
 npx shadcn@latest add button
 npx shadcn@latest add dialog
@@ -49,9 +50,9 @@ For the full list, visit: [shadcn/ui documentation](https://ui.shadcn.com/)
 ### ✅ DO
 
 ```tsx
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 
 export function MyComponent() {
   return (
@@ -59,7 +60,7 @@ export function MyComponent() {
       <Input placeholder="Enter URL" />
       <Button>Shorten</Button>
     </Card>
-  )
+  );
 }
 ```
 
@@ -68,12 +69,12 @@ export function MyComponent() {
 ```tsx
 // Don't create custom button components
 export function CustomButton({ children }) {
-  return <button className="...">{children}</button>
+  return <button className="...">{children}</button>;
 }
 
 // Don't create custom card components
 export function CustomCard({ children }) {
-  return <div className="rounded-lg border...">{children}</div>
+  return <div className="rounded-lg border...">{children}</div>;
 }
 ```
 
@@ -82,10 +83,15 @@ export function CustomCard({ children }) {
 shadcn/ui components are designed to be composed together. Build complex UIs by combining existing components:
 
 ```tsx
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export function CreateLinkDialog() {
   return (
@@ -103,7 +109,7 @@ export function CreateLinkDialog() {
         </div>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 ```
 
@@ -132,6 +138,7 @@ import { Button } from "@/components/ui/button"
 ## 🌙 Theming
 
 shadcn/ui uses CSS variables for theming. Theme configuration is in:
+
 - `app/globals.css` - CSS variable definitions
 - `tailwind.config.ts` - Tailwind theme extension
 

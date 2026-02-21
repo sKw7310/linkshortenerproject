@@ -49,7 +49,7 @@ export default function DashboardPage() {
     const result = await createLink(data);
     // Handle result
   };
-  
+
   return <form onSubmit={handleSubmit}>...</form>;
 }
 ```
@@ -82,12 +82,12 @@ All input data **MUST** be validated using Zod schemas:
 
 ```typescript
 // app/dashboard/actions.ts
-'use server';
+"use server";
 
-import { z } from 'zod';
+import { z } from "zod";
 
 const CreateLinkSchema = z.object({
-  url: z.string().url('Must be a valid URL'),
+  url: z.string().url("Must be a valid URL"),
   slug: z.string().min(3).max(50).optional(),
   title: z.string().max(200).optional(),
 });
@@ -96,14 +96,14 @@ export async function createLink(data: unknown) {
   try {
     // Validate input
     const validated = CreateLinkSchema.parse(data);
-    
+
     // Continue with validated data
     // ...
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: 'Validation failed', details: error.errors };
+      return { error: "Validation failed", details: error.errors };
     }
-    return { error: 'An unexpected error occurred' };
+    return { error: "An unexpected error occurred" };
   }
 }
 ```
@@ -117,9 +117,9 @@ Server actions **MUST NOT** throw errors. Instead, they should **ALWAYS** return
 export async function createLink(data: unknown) {
   const { userId } = await auth();
   if (!userId) {
-    throw new Error('Unauthorized'); // DON'T DO THIS
+    throw new Error("Unauthorized"); // DON'T DO THIS
   }
-  
+
   const validated = CreateLinkSchema.parse(data); // This throws
   return await createLinkForUser(userId, validated);
 }
@@ -128,18 +128,18 @@ export async function createLink(data: unknown) {
 export async function createLink(data: unknown) {
   const { userId } = await auth();
   if (!userId) {
-    return { error: 'Unauthorized' }; // Return error object
+    return { error: "Unauthorized" }; // Return error object
   }
-  
+
   try {
     const validated = CreateLinkSchema.parse(data);
     const link = await createLinkForUser(userId, validated);
     return { success: true, link }; // Return success object
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: 'Validation failed', details: error.errors };
+      return { error: "Validation failed", details: error.errors };
     }
-    return { error: 'Failed to create link' };
+    return { error: "Failed to create link" };
   }
 }
 ```
@@ -152,28 +152,28 @@ All server actions **MUST** check for an authenticated user **BEFORE** any datab
 
 ```typescript
 // app/dashboard/actions.ts
-'use server';
+"use server";
 
-import { auth } from '@clerk/nextjs/server';
-import { z } from 'zod';
+import { auth } from "@clerk/nextjs/server";
+import { z } from "zod";
 
 export async function createLink(data: unknown) {
   // 1. Check authentication FIRST
   const { userId } = await auth();
   if (!userId) {
-    return { error: 'Unauthorized' }; // Return error object, don't throw
+    return { error: "Unauthorized" }; // Return error object, don't throw
   }
-  
+
   try {
     // 2. Validate input
     const validated = CreateLinkSchema.parse(data);
-    
+
     // 3. Perform database operation
     // ...
-    
+
     return { success: true }; // Return success object
   } catch (error) {
-    return { error: 'Operation failed' };
+    return { error: "Operation failed" };
   }
 }
 ```
@@ -186,41 +186,44 @@ Server actions **MUST NOT** contain direct Drizzle queries. Instead, use helper 
 // ❌ WRONG - Direct Drizzle query in server action
 export async function createLink(data: unknown) {
   const { userId } = await auth();
-  if (!userId) return { error: 'Unauthorized' };
-  
+  if (!userId) return { error: "Unauthorized" };
+
   try {
     const validated = CreateLinkSchema.parse(data);
-    
+
     // Don't do this - direct database query
-    const result = await db.insert(links).values({
-      ...validated,
-      userId,
-    }).returning();
-    
+    const result = await db
+      .insert(links)
+      .values({
+        ...validated,
+        userId,
+      })
+      .returning();
+
     return { success: true, link: result[0] };
   } catch (error) {
-    return { error: 'Failed to create link' };
+    return { error: "Failed to create link" };
   }
 }
 
 // ✅ CORRECT - Use helper function from /data
-import { createLinkForUser } from '@/data/links';
+import { createLinkForUser } from "@/data/links";
 
 export async function createLink(data: unknown) {
   const { userId } = await auth();
   if (!userId) {
-    return { error: 'Unauthorized' }; // Return error object
+    return { error: "Unauthorized" }; // Return error object
   }
-  
+
   try {
     const validated = CreateLinkSchema.parse(data);
     const link = await createLinkForUser(userId, validated);
     return { success: true, link }; // Return success object
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: 'Validation failed', details: error.errors };
+      return { error: "Validation failed", details: error.errors };
     }
-    return { error: 'Failed to create link' };
+    return { error: "Failed to create link" };
   }
 }
 ```
@@ -231,21 +234,27 @@ Create helper functions in `/data` directory that wrap Drizzle queries:
 
 ```typescript
 // data/links.ts
-import { db } from '@/db';
-import { links } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { db } from "@/db";
+import { links } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
-export async function createLinkForUser(userId: string, data: {
-  url: string;
-  slug?: string;
-  title?: string;
-}) {
-  const result = await db.insert(links).values({
-    ...data,
-    userId,
-    createdAt: new Date(),
-  }).returning();
-  
+export async function createLinkForUser(
+  userId: string,
+  data: {
+    url: string;
+    slug?: string;
+    title?: string;
+  },
+) {
+  const result = await db
+    .insert(links)
+    .values({
+      ...data,
+      userId,
+      createdAt: new Date(),
+    })
+    .returning();
+
   return result[0];
 }
 
@@ -260,15 +269,19 @@ Here's a complete example following all the rules:
 
 ```typescript
 // app/dashboard/actions.ts
-'use server';
+"use server";
 
-import { auth } from '@clerk/nextjs/server';
-import { z } from 'zod';
-import { createLinkForUser, updateLinkForUser, deleteLinkForUser } from '@/data/links';
-import { revalidatePath } from 'next/cache';
+import { auth } from "@clerk/nextjs/server";
+import { z } from "zod";
+import {
+  createLinkForUser,
+  updateLinkForUser,
+  deleteLinkForUser,
+} from "@/data/links";
+import { revalidatePath } from "next/cache";
 
 const CreateLinkSchema = z.object({
-  url: z.string().url('Must be a valid URL'),
+  url: z.string().url("Must be a valid URL"),
   slug: z.string().min(3).max(50).optional(),
   title: z.string().max(200).optional(),
 });
@@ -277,25 +290,25 @@ export async function createLink(data: unknown) {
   // 1. Check authentication
   const { userId } = await auth();
   if (!userId) {
-    return { error: 'Unauthorized' };
+    return { error: "Unauthorized" };
   }
-  
+
   try {
     // 2. Validate input
     const validated = CreateLinkSchema.parse(data);
-    
+
     // 3. Call helper function
     const link = await createLinkForUser(userId, validated);
-    
+
     // 4. Revalidate if needed
-    revalidatePath('/dashboard');
-    
+    revalidatePath("/dashboard");
+
     return { success: true, link };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return { error: 'Validation failed', details: error.errors };
+      return { error: "Validation failed", details: error.errors };
     }
-    return { error: 'Failed to create link' };
+    return { error: "Failed to create link" };
   }
 }
 ```
@@ -309,20 +322,20 @@ import { useState } from 'react';
 
 export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     const formData = new FormData(e.currentTarget);
     const data = {
       url: formData.get('url') as string,
       slug: formData.get('slug') as string,
       title: formData.get('title') as string,
     };
-    
+
     const result = await createLink(data);
-    
+
     if (result.error) {
       // Handle error
       alert(result.error);
@@ -330,10 +343,10 @@ export default function DashboardPage() {
       // Handle success
       alert('Link created!');
     }
-    
+
     setIsLoading(false);
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       {/* form fields */}

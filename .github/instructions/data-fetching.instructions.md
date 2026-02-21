@@ -3,11 +3,11 @@ name: Data Fetching Guidelines
 description: This file describes the data fetching strategy for the project.
 ---
 
-
 # Data Fetching Guidelines
+
 This document outlines the data guidelines for fetching data in our next.js application. Adhering to these guidelines will ensure consistency, maintainability across the codebase.
 
-##1. **Use Server Components for Data Fetching.
+##1. \*\*Use Server Components for Data Fetching.
 
 In Next.js, ALWAYS use Server Components for the data fetching. NEVER use Client Components for data fetching.
 
@@ -16,5 +16,3 @@ In Next.js, ALWAYS use Server Components for the data fetching. NEVER use Client
 ALWAYS use the helper functions in the /data directory to fetch data. NEVER fetch dta directly in the components.
 
 ALL helper functions in the /data directory should use Drizzle ORM for database interactions.
-
-

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { createLink } from '../actions';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { createLink } from "../actions";
 
 interface CreateLinkDialogProps {
   children?: React.ReactNode;
@@ -23,9 +23,9 @@ export function CreateLinkDialog({ children }: CreateLinkDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    originalUrl: '',
-    shortCode: '',
-    title: '',
+    originalUrl: "",
+    shortCode: "",
+    title: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,15 +41,15 @@ export function CreateLinkDialog({ children }: CreateLinkDialogProps) {
 
     const result = await createLink(data);
 
-    if ('error' in result) {
-      setError(result.details || result.error || 'An error occurred');
+    if ("error" in result) {
+      setError(result.details || result.error || "An error occurred");
       setIsLoading(false);
     } else {
       // Success - reset form and close dialog
       setFormData({
-        originalUrl: '',
-        shortCode: '',
-        title: '',
+        originalUrl: "",
+        shortCode: "",
+        title: "",
       });
       setIsLoading(false);
       setOpen(false);
@@ -73,7 +73,8 @@ export function CreateLinkDialog({ children }: CreateLinkDialogProps) {
         <DialogHeader>
           <DialogTitle>Create New Short Link</DialogTitle>
           <DialogDescription>
-            Enter the URL you want to shorten and optionally customize your short link.
+            Enter the URL you want to shorten and optionally customize your
+            short link.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
@@ -111,7 +112,8 @@ export function CreateLinkDialog({ children }: CreateLinkDialogProps) {
               maxLength={20}
             />
             <p className="text-sm text-muted-foreground">
-              Leave empty to auto-generate. Only letters, numbers, hyphens, and underscores.
+              Leave empty to auto-generate. Only letters, numbers, hyphens, and
+              underscores.
             </p>
           </div>
 
@@ -148,7 +150,7 @@ export function CreateLinkDialog({ children }: CreateLinkDialogProps) {
               Cancel
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Creating...' : 'Create Link'}
+              {isLoading ? "Creating..." : "Create Link"}
             </Button>
           </div>
         </form>

@@ -1,6 +1,6 @@
-import { db } from '@/db';
-import { links } from '@/db/schema';
-import { eq, desc, and, sql } from 'drizzle-orm';
+import { db } from "@/db";
+import { links } from "@/db/schema";
+import { eq, desc, and, sql } from "drizzle-orm";
 
 /**
  * Fetch all links for a specific user
@@ -27,13 +27,13 @@ export async function getUserLink(linkId: string, userId: string) {
     .from(links)
     .where(eq(links.id, linkId))
     .limit(1);
-  
+
   const link = result[0];
-  
+
   if (!link || link.userId !== userId) {
     return null;
   }
-  
+
   return link;
 }
 
@@ -48,7 +48,7 @@ export async function getLinkByShortCode(shortCode: string) {
     .from(links)
     .where(eq(links.shortCode, shortCode))
     .limit(1);
-  
+
   return result[0] || null;
 }
 
@@ -64,7 +64,7 @@ export async function createLinkForUser(
     originalUrl: string;
     shortCode: string;
     title?: string;
-  }
+  },
 ) {
   const result = await db
     .insert(links)
@@ -75,7 +75,7 @@ export async function createLinkForUser(
       title: data.title || null,
     })
     .returning();
-  
+
   return result[0];
 }
 
@@ -92,7 +92,7 @@ export async function updateLinkForUser(
   data: {
     originalUrl?: string;
     title?: string;
-  }
+  },
 ) {
   const result = await db
     .update(links)
@@ -103,7 +103,7 @@ export async function updateLinkForUser(
     })
     .where(and(eq(links.id, linkId), eq(links.userId, userId)))
     .returning();
-  
+
   return result[0] || null;
 }
 
@@ -118,7 +118,7 @@ export async function deleteLinkForUser(linkId: string, userId: string) {
     .delete(links)
     .where(and(eq(links.id, linkId), eq(links.userId, userId)))
     .returning();
-  
+
   return result.length > 0;
 }
 
@@ -135,6 +135,6 @@ export async function incrementLinkClicks(shortCode: string) {
     })
     .where(eq(links.shortCode, shortCode))
     .returning();
-  
+
   return result[0] || null;
 }

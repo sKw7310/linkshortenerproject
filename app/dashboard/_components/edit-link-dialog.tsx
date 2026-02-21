@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,12 +8,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { updateLink } from '../actions';
-import type { Link } from '@/db/schema';
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { updateLink } from "../actions";
+import type { Link } from "@/db/schema";
 
 interface EditLinkDialogProps {
   link: Link;
@@ -26,14 +26,14 @@ export function EditLinkDialog({ link, children }: EditLinkDialogProps) {
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     originalUrl: link.originalUrl,
-    title: link.title || '',
+    title: link.title || "",
   });
 
   // Reset form when dialog opens/closes or link changes
   useEffect(() => {
     setFormData({
       originalUrl: link.originalUrl,
-      title: link.title || '',
+      title: link.title || "",
     });
     setError(null);
   }, [link, open]);
@@ -51,8 +51,8 @@ export function EditLinkDialog({ link, children }: EditLinkDialogProps) {
 
     const result = await updateLink(data);
 
-    if ('error' in result) {
-      setError(result.details || result.error || 'An error occurred');
+    if ("error" in result) {
+      setError(result.details || result.error || "An error occurred");
       setIsLoading(false);
     } else {
       // Success - close dialog
@@ -72,7 +72,11 @@ export function EditLinkDialog({ link, children }: EditLinkDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {children || <Button variant="outline" size="sm">Edit</Button>}
+        {children || (
+          <Button variant="outline" size="sm">
+            Edit
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
@@ -148,7 +152,7 @@ export function EditLinkDialog({ link, children }: EditLinkDialogProps) {
               Cancel
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'Updating...' : 'Update Link'}
+              {isLoading ? "Updating..." : "Update Link"}
             </Button>
           </div>
         </form>
